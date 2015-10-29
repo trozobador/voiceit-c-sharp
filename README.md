@@ -10,6 +10,7 @@ Then initialize a VoiceIt Object like this with your own developer id
 /* Make Sure to add this at the top of your project */
 
 using static VoiceIt;
+
 var myVoiceIt = new VoiceIt("123456");
 ```
 Finally use all other API Calls as documented on the [VoiceIt API Documentation](https://siv.voiceprintportal.com/getstarted.jsp#apidocs) page.
