@@ -43,7 +43,7 @@ using System.Security.Cryptography;
 		var email = mail;
 		var password = GetSha256FromString(passwd);
 		//password = GetSha256FromString(password);
-		// Create a request for the URL. 
+		// Create a request for the URL.
 		WebRequest request = WebRequest.Create ("https://siv.voiceprintportal.com/sivservice/api/users");
 		request.Headers["VsitEmail"] = email;
 		request.Headers["VsitPassword"] = password;
@@ -100,7 +100,7 @@ using System.Security.Cryptography;
 		var email = mail;
 		var password = GetSha256FromString(passwd);
 		//password = GetSha256FromString(password);
-		// Create a request for the URL. 
+		// Create a request for the URL.
 		WebRequest request = WebRequest.Create ("https://siv.voiceprintportal.com/sivservice/api/users");
 		request.Headers["VsitEmail"] = email;
 		request.Headers["VsitPassword"] = password;
@@ -152,7 +152,7 @@ using System.Security.Cryptography;
 		var email = mail;
 		var password = GetSha256FromString(passwd);
 		//password = GetSha256FromString(password);
-		// Create a request for the URL. 
+		// Create a request for the URL.
 		WebRequest request = WebRequest.Create ("https://siv.voiceprintportal.com/sivservice/api/users");
 		request.Headers["VsitEmail"] = email;
 		request.Headers["VsitPassword"] = password;
@@ -191,7 +191,7 @@ using System.Security.Cryptography;
 		return "";
 	}//End of getUser Method
 
-		
+
 
 	//Function to update the user
 	public string setUser(string mail,string passwd, string firstName, string lastName, string phone1 = "", string phone2 = "", string phone3 = "")
@@ -199,7 +199,7 @@ using System.Security.Cryptography;
 		var email = mail;
 		var password = GetSha256FromString(passwd);
 		//password = GetSha256FromString(password);
-		// Create a request for the URL. 
+		// Create a request for the URL.
 		WebRequest request = WebRequest.Create ("https://siv.voiceprintportal.com/sivservice/api/users");
 		request.Headers["VsitEmail"] = email;
 		request.Headers["VsitPassword"] = password;
@@ -251,18 +251,19 @@ using System.Security.Cryptography;
 	}//End of setUser Method
 
 	//Function to create a new Enrollment
-	public string createEnrollment(string mail,string passwd, string pathToEnrollmentWav)
+	public string createEnrollment(string mail,string passwd, string pathToEnrollmentWav, string contentLanguage = "")
 	{
 		var email = mail;
 		var password = GetSha256FromString(passwd);
 		//password = GetSha256FromString(password);
 		byte[] wavData = System.IO.File.ReadAllBytes(pathToEnrollmentWav);
-		// Create a request for the URL. 
+		// Create a request for the URL.
 		WebRequest request = WebRequest.Create ("https://siv.voiceprintportal.com/sivservice/api/enrollments");
 		request.ContentType = "audio/wav";
 		request.Headers["VsitEmail"] = email;
 		request.Headers["VsitPassword"] = password;
 		request.Headers["VsitDeveloperId"] = this.developerId;
+		request.Headers["ContentLanguage"] = contentLanguage;
 		request.Method = "POST";
 		request.ContentLength = wavData.Length;
 		// Get the request stream.
@@ -301,20 +302,21 @@ using System.Security.Cryptography;
 		}
 		return "";
 	}//End of createEnrollment Method
-		
+
 	//Function to create a new Enrollment by Wav URL
-	public string createEnrollmentByWavURL(string mail,string passwd, string urlToEnrollmentWav)
+	public string createEnrollmentByWavURL(string mail,string passwd, string urlToEnrollmentWav, string contentLanguage = "")
 	{
 		var email = mail;
 		var password = GetSha256FromString(passwd);
 		//password = GetSha256FromString(password);
-		// Create a request for the URL. 
+		// Create a request for the URL.
 		WebRequest request = WebRequest.Create ("https://siv.voiceprintportal.com/sivservice/api/enrollments/bywavurl");
 		request.ContentType = "audio/wav";
 		request.Headers["VsitEmail"] = email;
 		request.Headers["VsitPassword"] = password;
 		request.Headers["VsitDeveloperId"] = this.developerId;
 		request.Headers ["VsitwavURL"] = urlToEnrollmentWav;
+		request.Headers["ContentLanguage"] = contentLanguage;
 		request.Method = "POST";
 		string postData = "";
 		byte[] byteArray = Encoding.UTF8.GetBytes (postData);
@@ -362,7 +364,7 @@ using System.Security.Cryptography;
 		var email = mail;
 		var password = GetSha256FromString(passwd);
 		//password = GetSha256FromString(password);
-		// Create a request for the URL. 
+		// Create a request for the URL.
 		WebRequest request = WebRequest.Create ("https://siv.voiceprintportal.com/sivservice/api/enrollments"+ "/"+ enrollmentId);
 		request.Headers["VsitEmail"] = email;
 		request.Headers["VsitPassword"] = password;
@@ -414,7 +416,7 @@ using System.Security.Cryptography;
 		var email = mail;
 		var password = GetSha256FromString(passwd);
 		//password = GetSha256FromString(password);
-		// Create a request for the URL. 
+		// Create a request for the URL.
 		WebRequest request = WebRequest.Create ("https://siv.voiceprintportal.com/sivservice/api/enrollments");
 		request.Headers["VsitEmail"] = email;
 		request.Headers["VsitPassword"] = password;
@@ -454,13 +456,13 @@ using System.Security.Cryptography;
 	}//End of getEnrollments Method
 
 	//Function to authenticate your Voice Print
-	public string authentication(string mail,string passwd, string pathToAuthenticationWav,string accuracy, string accuracyPasses, string accuracyPassIncrement, string confidence)
+	public string authentication(string mail,string passwd, string pathToAuthenticationWav,string accuracy, string accuracyPasses, string accuracyPassIncrement, string confidence, string contentLanguage = "")
 	{
 			var email = mail;
 			var password = GetSha256FromString(passwd);
 			//password = GetSha256FromString(password);
 			byte[] wavData = System.IO.File.ReadAllBytes(pathToAuthenticationWav);
-			// Create a request for the URL. 
+			// Create a request for the URL.
 			WebRequest request = WebRequest.Create ("https://siv.voiceprintportal.com/sivservice/api/authentications");
 			request.ContentType = "audio/wav";
 			request.Headers["VsitEmail"] = email;
@@ -470,6 +472,7 @@ using System.Security.Cryptography;
 			request.Headers["VsitAccuracyPasses"] = accuracyPasses;
 			request.Headers ["VsitAccuracyPassIncrement"] = accuracyPassIncrement;
 			request.Headers["VsitConfidence"] = confidence;
+			request.Headers["ContentLanguage"] = contentLanguage;
 			request.Method = "POST";
 			request.ContentLength = wavData.Length;
 			// Get the request stream.
@@ -510,12 +513,12 @@ using System.Security.Cryptography;
 	}//End of authentication Method
 
 	//Function to authenticate your Voice Print
-	public string authenticationByWavURL(string mail,string passwd, string urlToAuthenticationWav,string accuracy, string accuracyPasses, string accuracyPassIncrement, string confidence)
+	public string authenticationByWavURL(string mail,string passwd, string urlToAuthenticationWav,string accuracy, string accuracyPasses, string accuracyPassIncrement, string confidence, string contentLanguage = "")
 	{
 		var email = mail;
 		var password = GetSha256FromString(passwd);
 		//password = GetSha256FromString(password);
-		// Create a request for the URL. 
+		// Create a request for the URL.
 		WebRequest request = WebRequest.Create ("https://siv.voiceprintportal.com/sivservice/api/authentications/bywavurl");
 		request.Headers["VsitwavURL"] = urlToAuthenticationWav;
 		request.Headers["VsitEmail"] = email;
@@ -525,6 +528,7 @@ using System.Security.Cryptography;
 		request.Headers["VsitAccuracyPasses"] = accuracyPasses;
 		request.Headers["VsitAccuracyPassIncrement"] = accuracyPassIncrement;
 		request.Headers["VsitConfidence"] = confidence;
+		request.Headers["ContentLanguage"] = contentLanguage;
 		request.Method = "POST";
 		string postData = "";
 		byte[] byteArray = Encoding.UTF8.GetBytes (postData);
@@ -568,6 +572,3 @@ using System.Security.Cryptography;
 
 	}//End of Class Declaration
 //}
-
-
-
