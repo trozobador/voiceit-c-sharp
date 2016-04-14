@@ -464,7 +464,7 @@ using System.Security.Cryptography;
 	}//End of getEnrollments Method
 
 	//Function to authenticate your Voice Print
-	public string authentication(string mail,string passwd, string pathToAuthenticationWav,string accuracy, string accuracyPasses, string accuracyPassIncrement, string confidence, string contentLanguage = "")
+	public string authentication(string mail,string passwd, string pathToAuthenticationWav, string confidence, string contentLanguage = "")
 	{
 			var email = mail;
 			var password = GetSha256FromString(passwd);
@@ -476,9 +476,6 @@ using System.Security.Cryptography;
 			request.Headers["VsitEmail"] = email;
 			request.Headers["VsitPassword"] = password;
 			request.Headers["VsitDeveloperId"] = this.developerId;
-			request.Headers["VsitAccuracy"] = accuracy;
-			request.Headers["VsitAccuracyPasses"] = accuracyPasses;
-			request.Headers ["VsitAccuracyPassIncrement"] = accuracyPassIncrement;
 			request.Headers["VsitConfidence"] = confidence;
 			request.Headers["ContentLanguage"] = contentLanguage;
 			request.Headers ["PlatformID"] = "4";
@@ -522,7 +519,7 @@ using System.Security.Cryptography;
 	}//End of authentication Method
 
 	//Function to authenticate your Voice Print
-	public string authenticationByWavURL(string mail,string passwd, string urlToAuthenticationWav,string accuracy, string accuracyPasses, string accuracyPassIncrement, string confidence, string contentLanguage = "")
+	public string authenticationByWavURL(string mail,string passwd, string urlToAuthenticationWav, string confidence, string contentLanguage = "")
 	{
 		var email = mail;
 		var password = GetSha256FromString(passwd);
@@ -533,9 +530,6 @@ using System.Security.Cryptography;
 		request.Headers["VsitEmail"] = email;
 		request.Headers["VsitPassword"] = password;
 		request.Headers["VsitDeveloperId"] = this.developerId;
-		request.Headers["VsitAccuracy"] = accuracy;
-		request.Headers["VsitAccuracyPasses"] = accuracyPasses;
-		request.Headers["VsitAccuracyPassIncrement"] = accuracyPassIncrement;
 		request.Headers["VsitConfidence"] = confidence;
 		request.Headers["ContentLanguage"] = contentLanguage;
 		request.Headers ["PlatformID"] = "4";
