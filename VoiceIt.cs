@@ -259,8 +259,61 @@ using System.Security.Cryptography;
 	{
 		var email = mail;
 		var password = GetSha256FromString(passwd);
-		//password = GetSha256FromString(password);
+
 		byte[] wavData = System.IO.File.ReadAllBytes(pathToEnrollmentWav);
+		// Create a request for the URL.
+		WebRequest request = WebRequest.Create ("https://siv.voiceprintportal.com/sivservice/api/enrollments");
+		request.ContentType = "audio/wav";
+		request.Headers["VsitEmail"] = email;
+		request.Headers["VsitPassword"] = password;
+		request.Headers["VsitDeveloperId"] = this.developerId;
+		request.Headers["ContentLanguage"] = contentLanguage;
+		request.Headers ["PlatformID"] = "4";
+		request.Method = "POST";
+		request.ContentLength = wavData.Length;
+		// Get the request stream.
+		Stream dataStream = request.GetRequestStream ();
+		// Write the data to the request stream.
+		dataStream.Write (wavData, 0, wavData.Length);
+		// Close the Stream object.
+		dataStream.Close ();
+		// Get the response.
+		try{
+			WebResponse response = request.GetResponse ();
+			// Display the status.
+			//Console.WriteLine (((HttpWebResponse)response).StatusDescription);
+			// Get the stream containing content returned by the server.
+			dataStream = response.GetResponseStream ();
+			// Open the stream using a StreamReader for easy access.
+			StreamReader reader = new StreamReader (dataStream);
+			// Read the content.
+			string responseFromServer = reader.ReadToEnd ();
+			// Display the content.
+			//Console.WriteLine (responseFromServer);
+			reader.Close ();
+			dataStream.Close ();
+			response.Close ();
+
+			return responseFromServer;
+			// Clean up the streams.
+
+		}
+		catch (WebException ex)
+		{
+			if (ex.Status == WebExceptionStatus.ProtocolError){
+				using (var response = (HttpWebResponse)ex.Response){
+					using (var stream = response.GetResponseStream()){
+						using (var reader = new StreamReader(stream, Encoding.GetEncoding("utf-8"))){return reader.ReadToEnd();}}}}
+		}
+		return "";
+	}//End of createEnrollment Method
+
+	//Function to create a new Enrollment
+	public string createEnrollmentByByteData(string mail,string passwd, byte[] wavData, string contentLanguage = "")
+	{
+		var email = mail;
+		var password = GetSha256FromString(passwd);
+
 		// Create a request for the URL.
 		WebRequest request = WebRequest.Create ("https://siv.voiceprintportal.com/sivservice/api/enrollments");
 		request.ContentType = "audio/wav";
@@ -470,6 +523,60 @@ using System.Security.Cryptography;
 			var password = GetSha256FromString(passwd);
 			//password = GetSha256FromString(password);
 			byte[] wavData = System.IO.File.ReadAllBytes(pathToAuthenticationWav);
+			// Create a request for the URL.
+			WebRequest request = WebRequest.Create ("https://siv.voiceprintportal.com/sivservice/api/authentications");
+			request.ContentType = "audio/wav";
+			request.Headers["VsitEmail"] = email;
+			request.Headers["VsitPassword"] = password;
+			request.Headers["VsitDeveloperId"] = this.developerId;
+			request.Headers["VsitConfidence"] = confidence;
+			request.Headers["ContentLanguage"] = contentLanguage;
+			request.Headers ["PlatformID"] = "4";
+			request.Method = "POST";
+			request.ContentLength = wavData.Length;
+			// Get the request stream.
+			Stream dataStream = request.GetRequestStream ();
+			// Write the data to the request stream.
+			dataStream.Write (wavData, 0, wavData.Length);
+			// Close the Stream object.
+			dataStream.Close ();
+			// Get the response.
+			try{
+				WebResponse response = request.GetResponse ();
+				// Display the status.
+				//Console.WriteLine (((HttpWebResponse)response).StatusDescription);
+				// Get the stream containing content returned by the server.
+				dataStream = response.GetResponseStream ();
+				// Open the stream using a StreamReader for easy access.
+				StreamReader reader = new StreamReader (dataStream);
+				// Read the content.
+				string responseFromServer = reader.ReadToEnd ();
+				// Display the content.
+				//Console.WriteLine (responseFromServer);
+				reader.Close ();
+				dataStream.Close ();
+				response.Close ();
+
+				return responseFromServer;
+				// Clean up the streams.
+
+			}
+			catch (WebException ex)
+			{
+				if (ex.Status == WebExceptionStatus.ProtocolError){
+					using (var response = (HttpWebResponse)ex.Response){
+						using (var stream = response.GetResponseStream()){
+							using (var reader = new StreamReader(stream, Encoding.GetEncoding("utf-8"))){return reader.ReadToEnd();}}}}
+			}
+			return "";
+	}//End of authentication Method
+
+	//Function to authenticate your Voice Print
+	public string authenticationByByteData(string mail,string passwd, byte[] wavData, string confidence, string contentLanguage = "")
+	{
+			var email = mail;
+			var password = GetSha256FromString(passwd);
+
 			// Create a request for the URL.
 			WebRequest request = WebRequest.Create ("https://siv.voiceprintportal.com/sivservice/api/authentications");
 			request.ContentType = "audio/wav";
