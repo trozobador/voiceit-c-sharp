@@ -48,12 +48,12 @@ using System.Security.Cryptography;
 		request.Headers["VsitEmail"] = email;
 		request.Headers["VsitPassword"] = password;
 		request.Headers["VsitDeveloperId"] = this.developerId;
-		request.Headers ["VsitFirstName"] = firstName;
-		request.Headers ["VsitLastName"] = lastName;
-		request.Headers ["VsitPhone1"] = phone1;
-		request.Headers ["VsitPhone2"] = phone2;
-		request.Headers ["VsitPhone3"] = phone3;
-		request.Headers ["PlatformID"] = "4";
+		request.Headers["VsitFirstName"] = firstName;
+		request.Headers["VsitLastName"] = lastName;
+		request.Headers["VsitPhone1"] = phone1;
+		request.Headers["VsitPhone2"] = phone2;
+		request.Headers["VsitPhone3"] = phone3;
+		request.Headers["PlatformID"] = "4";
 		request.Method = "POST";
 		string postData = "";
 		byte[] byteArray = Encoding.UTF8.GetBytes (postData);
@@ -106,7 +106,7 @@ using System.Security.Cryptography;
 		request.Headers["VsitEmail"] = email;
 		request.Headers["VsitPassword"] = password;
 		request.Headers["VsitDeveloperId"] = this.developerId;
-		request.Headers ["PlatformID"] = "4";
+		request.Headers["PlatformID"] = "4";
 		request.Method = "DELETE";
 		string postData = "";
 		byte[] byteArray = Encoding.UTF8.GetBytes (postData);
@@ -159,7 +159,7 @@ using System.Security.Cryptography;
 		request.Headers["VsitEmail"] = email;
 		request.Headers["VsitPassword"] = password;
 		request.Headers["VsitDeveloperId"] = this.developerId;
-		request.Headers ["PlatformID"] = "4";
+		request.Headers["PlatformID"] = "4";
 		request.Method = "GET";
 
 		// Get the response.
@@ -207,12 +207,12 @@ using System.Security.Cryptography;
 		request.Headers["VsitEmail"] = email;
 		request.Headers["VsitPassword"] = password;
 		request.Headers["VsitDeveloperId"] = this.developerId;
-		request.Headers ["VsitFirstName"] = firstName;
-		request.Headers ["VsitLastName"] = lastName;
-		request.Headers ["VsitPhone1"] = phone1;
-		request.Headers ["VsitPhone2"] = phone2;
-		request.Headers ["VsitPhone3"] = phone3;
-		request.Headers ["PlatformID"] = "4";
+		request.Headers["VsitFirstName"] = firstName;
+		request.Headers["VsitLastName"] = lastName;
+		request.Headers["VsitPhone1"] = phone1;
+		request.Headers["VsitPhone2"] = phone2;
+		request.Headers["VsitPhone3"] = phone3;
+		request.Headers["PlatformID"] = "4";
 		request.Method = "PUT";
 		string postData = "";
 		byte[] byteArray = Encoding.UTF8.GetBytes (postData);
@@ -268,7 +268,7 @@ using System.Security.Cryptography;
 		request.Headers["VsitPassword"] = password;
 		request.Headers["VsitDeveloperId"] = this.developerId;
 		request.Headers["ContentLanguage"] = contentLanguage;
-		request.Headers ["PlatformID"] = "4";
+		request.Headers["PlatformID"] = "4";
 		request.Method = "POST";
 		request.ContentLength = wavData.Length;
 		// Get the request stream.
@@ -321,7 +321,7 @@ using System.Security.Cryptography;
 		request.Headers["VsitPassword"] = password;
 		request.Headers["VsitDeveloperId"] = this.developerId;
 		request.Headers["ContentLanguage"] = contentLanguage;
-		request.Headers ["PlatformID"] = "4";
+		request.Headers["PlatformID"] = "4";
 		request.Method = "POST";
 		request.ContentLength = wavData.Length;
 		// Get the request stream.
@@ -373,9 +373,9 @@ using System.Security.Cryptography;
 		request.Headers["VsitEmail"] = email;
 		request.Headers["VsitPassword"] = password;
 		request.Headers["VsitDeveloperId"] = this.developerId;
-		request.Headers ["VsitwavURL"] = urlToEnrollmentWav;
+		request.Headers["VsitwavURL"] = urlToEnrollmentWav;
 		request.Headers["ContentLanguage"] = contentLanguage;
-		request.Headers ["PlatformID"] = "4";
+		request.Headers["PlatformID"] = "4";
 		request.Method = "POST";
 		string postData = "";
 		byte[] byteArray = Encoding.UTF8.GetBytes (postData);
@@ -428,7 +428,7 @@ using System.Security.Cryptography;
 		request.Headers["VsitEmail"] = email;
 		request.Headers["VsitPassword"] = password;
 		request.Headers["VsitDeveloperId"] = this.developerId;
-		request.Headers ["PlatformID"] = "4";
+		request.Headers["PlatformID"] = "4";
 		request.Method = "DELETE";
 		string postData = "";
 		byte[] byteArray = Encoding.UTF8.GetBytes (postData);
@@ -481,7 +481,7 @@ using System.Security.Cryptography;
 		request.Headers["VsitEmail"] = email;
 		request.Headers["VsitPassword"] = password;
 		request.Headers["VsitDeveloperId"] = this.developerId;
-		request.Headers ["PlatformID"] = "4";
+		request.Headers["PlatformID"] = "4";
 		request.Method = "GET";
 
 		// Get the response.
@@ -516,6 +516,54 @@ using System.Security.Cryptography;
 		return "";
 	}//End of getEnrollments Method
 
+	//Function to retrieve the count of enrollments for a specific phrase for a specificUser
+	public string getEnrollmentsCount(string mail,string passwd, string vppText, string contentLanguage = "")
+	{
+		var email = mail;
+		var password = GetSha256FromString(passwd);
+
+		// Create a request for the URL.
+		WebRequest request = WebRequest.Create ("https://siv.voiceprintportal.com/sivservice/api/enrollments/count");
+		request.Headers["VsitEmail"] = email;
+		request.Headers["VsitPassword"] = password;
+		request.Headers["VppText"] = vppText;
+		request.Headers["ContentLanguage"] = contentLanguage;
+		request.Headers["VsitDeveloperId"] = this.developerId;
+		request.Headers["PlatformID"] = "4";
+		request.Method = "GET";
+
+		// Get the response.
+		try{
+			WebResponse response = request.GetResponse ();
+			// Display the status.
+			//Console.WriteLine (((HttpWebResponse)response).StatusDescription);
+			// Get the stream containing content returned by the server.
+			Stream dataStream = response.GetResponseStream ();
+			// Open the stream using a StreamReader for easy access.
+			StreamReader reader = new StreamReader (dataStream);
+			// Read the content.
+			string responseFromServer = reader.ReadToEnd ();
+			// Display the content.
+			//Console.WriteLine (responseFromServer);
+			reader.Close ();
+			dataStream.Close ();
+			response.Close ();
+
+
+			return responseFromServer;
+			// Clean up the streams.
+
+		}
+		catch (WebException ex)
+		{
+			if (ex.Status == WebExceptionStatus.ProtocolError){
+				using (var response = (HttpWebResponse)ex.Response){
+					using (var stream = response.GetResponseStream()){
+						using (var reader = new StreamReader(stream, Encoding.GetEncoding("utf-8"))){return reader.ReadToEnd();}}}}
+		}
+		return "";
+	}//End of getEnrollmentsCount Method
+
 	//Function to authenticate your Voice Print
 	public string authentication(string mail,string passwd, string pathToAuthenticationWav, string confidence, string contentLanguage = "")
 	{
@@ -531,7 +579,7 @@ using System.Security.Cryptography;
 			request.Headers["VsitDeveloperId"] = this.developerId;
 			request.Headers["VsitConfidence"] = confidence;
 			request.Headers["ContentLanguage"] = contentLanguage;
-			request.Headers ["PlatformID"] = "4";
+			request.Headers["PlatformID"] = "4";
 			request.Method = "POST";
 			request.ContentLength = wavData.Length;
 			// Get the request stream.
@@ -585,7 +633,7 @@ using System.Security.Cryptography;
 			request.Headers["VsitDeveloperId"] = this.developerId;
 			request.Headers["VsitConfidence"] = confidence;
 			request.Headers["ContentLanguage"] = contentLanguage;
-			request.Headers ["PlatformID"] = "4";
+			request.Headers["PlatformID"] = "4";
 			request.Method = "POST";
 			request.ContentLength = wavData.Length;
 			// Get the request stream.
@@ -639,7 +687,7 @@ using System.Security.Cryptography;
 		request.Headers["VsitDeveloperId"] = this.developerId;
 		request.Headers["VsitConfidence"] = confidence;
 		request.Headers["ContentLanguage"] = contentLanguage;
-		request.Headers ["PlatformID"] = "4";
+		request.Headers["PlatformID"] = "4";
 		request.Method = "POST";
 		string postData = "";
 		byte[] byteArray = Encoding.UTF8.GetBytes (postData);
