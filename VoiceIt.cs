@@ -36,7 +36,7 @@ using System.Security.Cryptography;
 		}
 
 	//Function to create a User
-	public string createUser(string userId,string passwd, string firstName, string lastName, string phone1 = "", string phone2 = "", string phone3 = "")
+	public string createUser(string userId,string passwd)
 	{
 
 		var password = GetSha256FromString(passwd);
@@ -46,11 +46,6 @@ using System.Security.Cryptography;
 		request.Headers["UserId"] = userId;
 		request.Headers["VsitPassword"] = password;
 		request.Headers["VsitDeveloperId"] = this.developerId;
-		request.Headers["VsitFirstName"] = firstName;
-		request.Headers["VsitLastName"] = lastName;
-		request.Headers["VsitPhone1"] = phone1;
-		request.Headers["VsitPhone2"] = phone2;
-		request.Headers["VsitPhone3"] = phone3;
 		request.Headers["PlatformID"] = "4";
 		request.Method = "POST";
 		string postData = "";
@@ -191,66 +186,6 @@ using System.Security.Cryptography;
 		}
 		return "";
 	}//End of getUser Method
-
-
-
-	//Function to update the user
-	public string setUser(string userId,string passwd, string firstName, string lastName, string phone1 = "", string phone2 = "", string phone3 = "")
-	{
-
-		var password = GetSha256FromString(passwd);
-		//password = GetSha256FromString(password);
-		// Create a request for the URL.
-		WebRequest request = WebRequest.Create ("https://siv.voiceprintportal.com/sivservice/api/users");
-		request.Headers["UserId"] = userId;
-		request.Headers["VsitPassword"] = password;
-		request.Headers["VsitDeveloperId"] = this.developerId;
-		request.Headers["VsitFirstName"] = firstName;
-		request.Headers["VsitLastName"] = lastName;
-		request.Headers["VsitPhone1"] = phone1;
-		request.Headers["VsitPhone2"] = phone2;
-		request.Headers["VsitPhone3"] = phone3;
-		request.Headers["PlatformID"] = "4";
-		request.Method = "PUT";
-		string postData = "";
-		byte[] byteArray = Encoding.UTF8.GetBytes (postData);
-		request.ContentLength = byteArray.Length;
-		// Get the request stream.
-		Stream dataStream = request.GetRequestStream ();
-		// Write the data to the request stream.
-		dataStream.Write (byteArray, 0, byteArray.Length);
-		// Close the Stream object.
-		dataStream.Close ();
-		// Get the response.
-		try{
-			WebResponse response = request.GetResponse ();
-			// Display the status.
-			//Console.WriteLine (((HttpWebResponse)response).StatusDescription);
-			// Get the stream containing content returned by the server.
-			dataStream = response.GetResponseStream ();
-			// Open the stream using a StreamReader for easy access.
-			StreamReader reader = new StreamReader (dataStream);
-			// Read the content.
-			string responseFromServer = reader.ReadToEnd ();
-			// Display the content.
-			//Console.WriteLine (responseFromServer);
-			reader.Close ();
-			dataStream.Close ();
-			response.Close ();
-
-			return responseFromServer;
-			// Clean up the streams.
-
-		}
-		catch (WebException ex)
-		{
-			if (ex.Status == WebExceptionStatus.ProtocolError){
-				using (var response = (HttpWebResponse)ex.Response){
-					using (var stream = response.GetResponseStream()){
-						using (var reader = new StreamReader(stream, Encoding.GetEncoding("utf-8"))){return reader.ReadToEnd();}}}}
-		}
-		return "";
-	}//End of setUser Method
 
 	//Function to create a new Enrollment
 	public string createEnrollment(string userId,string passwd, string pathToEnrollmentWav, string contentLanguage = "")
@@ -563,7 +498,7 @@ using System.Security.Cryptography;
 	}//End of getEnrollmentsCount Method
 
 	//Function to authenticate your Voice Print
-	public string authentication(string userId,string passwd, string pathToAuthenticationWav, string confidence, string contentLanguage = "")
+	public string authentication(string userId,string passwd, string pathToAuthenticationWav, string contentLanguage = "")
 	{
 
 			var password = GetSha256FromString(passwd);
@@ -575,7 +510,6 @@ using System.Security.Cryptography;
 			request.Headers["UserId"] = userId;
 			request.Headers["VsitPassword"] = password;
 			request.Headers["VsitDeveloperId"] = this.developerId;
-			request.Headers["VsitConfidence"] = confidence;
 			request.Headers["ContentLanguage"] = contentLanguage;
 			request.Headers["PlatformID"] = "4";
 			request.Method = "POST";
@@ -618,7 +552,7 @@ using System.Security.Cryptography;
 	}//End of authentication Method
 
 	//Function to authenticate your Voice Print
-	public string authenticationByByteData(string userId,string passwd, byte[] wavData, string confidence, string contentLanguage = "")
+	public string authenticationByByteData(string userId,string passwd, byte[] wavData, string contentLanguage = "")
 	{
 
 			var password = GetSha256FromString(passwd);
@@ -629,7 +563,6 @@ using System.Security.Cryptography;
 			request.Headers["UserId"] = userId;
 			request.Headers["VsitPassword"] = password;
 			request.Headers["VsitDeveloperId"] = this.developerId;
-			request.Headers["VsitConfidence"] = confidence;
 			request.Headers["ContentLanguage"] = contentLanguage;
 			request.Headers["PlatformID"] = "4";
 			request.Method = "POST";
@@ -672,7 +605,7 @@ using System.Security.Cryptography;
 	}//End of authentication Method
 
 	//Function to authenticate your Voice Print
-	public string authenticationByWavURL(string userId,string passwd, string urlToAuthenticationWav, string confidence, string contentLanguage = "")
+	public string authenticationByWavURL(string userId,string passwd, string urlToAuthenticationWav, string contentLanguage = "")
 	{
 
 		var password = GetSha256FromString(passwd);
@@ -683,7 +616,6 @@ using System.Security.Cryptography;
 		request.Headers["UserId"] = userId;
 		request.Headers["VsitPassword"] = password;
 		request.Headers["VsitDeveloperId"] = this.developerId;
-		request.Headers["VsitConfidence"] = confidence;
 		request.Headers["ContentLanguage"] = contentLanguage;
 		request.Headers["PlatformID"] = "4";
 		request.Method = "POST";
